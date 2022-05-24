@@ -66,10 +66,8 @@ let cardWon = []
 //Global Variables
 const gridDisplay = document.querySelector("#grid");
 let score = 1;
-const resultDisplay = document.querySelector("#result");
 let interval = null;
-const finish = document.querySelector("#totalTime");
-
+let counter = 0;
 
 
 //__________________________________________
@@ -116,17 +114,19 @@ function flipCard() {
     //Add the img property to the flipped card
     this.setAttribute("src", cardArray[cardId].img);
 
-//Add 0.5seconds before checkMatch function is called
-if (cardsChosen.length === 2) {
-    setTimeout(checkMatch, 500) 
-}
+    //Add 0.5seconds before checkMatch function is called
+    if (cardsChosen.length === 2) {
+        setTimeout(checkMatch, 500) 
+    }
 
-//Start timer 
-if (interval) {
-    return
-} else {
-    interval =  setInterval(increaseTimer, 1000);
-} 
+    //Start timer 
+    //Check if counter is running and return if true
+    if (interval) {
+        return
+    //If counter it's not running, call the increaseTimer function
+    } else {
+        interval =  setInterval(increaseTimer, 1000);
+    } 
 }
 
 
@@ -137,7 +137,8 @@ function checkMatch() {
 
      //if it's a match
     if (cardsChosen[0] === cardsChosen[1]) {
-        resultDisplay.textContent = score++;
+       
+        document.querySelector("#result").textContent = score++;
     cards[cardsChosenIds[0]].setAttribute("src", "images/white.png");
     cards[cardsChosenIds[1]].setAttribute("src", "images/white.png");
     cards[cardsChosenIds[0]].removeEventListener("click", flipCard);
@@ -158,21 +159,15 @@ function checkMatch() {
 
     //What happens when all cards are found
     if (cardWon.length === cardArray.length) {
-        resultDisplay.textContent = "Congratulations you won"
+        document.querySelector("#result").textContent = "Congratulations you won"
         clearInterval(interval);
-        finish.textContent = "Your total time: ";
-        console.log("over")
-        
+        document.querySelector("#totalTime").textContent = "Your total time: ";
     }
 }
 
 
-//Select the timer div element
-const time_el = document.querySelector("#timer")
-let counter = 0;
 
-
-//## Timer function - 
+//## Timer function - Start at the first click (when flipCard() is called) and increase seconds
 function increaseTimer() {
 
     //## IIFE - Function used to format the countdown display 
@@ -188,11 +183,12 @@ function increaseTimer() {
             mins = "0" + mins
         };
         
-        //Display the counter
-        time_el.innerText = `${mins}:${secs}`;
+        ////Select the timer div element & Display the counter
+        document.querySelector("#timer").innerText = `${mins}:${secs}`;
     })();
+
+    //Add 1 to the counter variable
     counter++;
-    console.log(counter);
 };
 
 
