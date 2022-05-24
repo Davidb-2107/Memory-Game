@@ -68,6 +68,9 @@ const gridDisplay = document.querySelector("#grid");
 let score = 1;
 const resultDisplay = document.querySelector("#result");
 let interval = null;
+const finish = document.querySelector("#totalTime");
+
+
 
 //__________________________________________
 
@@ -141,7 +144,6 @@ function checkMatch() {
     cards[cardsChosenIds[1]].removeEventListener("click", flipCard);
     cardWon.push(cardsChosen[0], cardsChosen[1]);
     
-    
 
     //if not a match
     } else {
@@ -157,6 +159,10 @@ function checkMatch() {
     //What happens when all cards are found
     if (cardWon.length === cardArray.length) {
         resultDisplay.textContent = "Congratulations you won"
+        clearInterval(interval);
+        finish.textContent = "Your total time: ";
+        console.log("over")
+        
     }
 }
 
