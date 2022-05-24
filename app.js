@@ -1,4 +1,3 @@
-
 //Array of Objects
 const cardArray = [
     {
@@ -53,7 +52,12 @@ const cardArray = [
    
 ];
 
-//Empty Arrays
+//sort an array randomly
+const sortArray = cardArray.sort( () => 0.5 - Math.random());
+console.log(sortArray);
+
+
+//Empty Arrays variables
 let cardsChosen = [];
 let cardsChosenIds = [];
 let cardWon = []
@@ -63,9 +67,62 @@ let cardWon = []
 const gridDisplay = document.querySelector("#grid");
 let score = 1;
 const resultDisplay = document.querySelector("#result");
+
+//__________________________________________
+
 //#Functions Part
 
-//## Functions - CheckMatch
+//## Function createBoard
+function createBoard() {
+    for (let i = 0; i < cardArray.length; i++) {
+        
+        //Create an element <img> using the createElement method 
+        const card = document.createElement("img");
+
+        //Set the "src" attribute to the created image element
+        card.src = "images/blank.png";
+
+        //Set an id of "data-id" based on the index
+        card.setAttribute("data-id", i);
+        
+        //Identified wich container aka "div" to append img elements to
+        gridDisplay.append(card);
+
+        //Flip card on click
+        card.addEventListener("click", flipCard);
+
+        
+    }
+}
+
+createBoard();
+
+//## Function flipCard - called everytime a card is clicked
+function flipCard() {
+    //Whatever element will be clicked, I wanna get his attribute
+    const cardId = this.getAttribute("data-id");
+
+    //Return the name of the object name clicked and push it to the cardChosen array
+    cardsChosen.push(cardArray[cardId].name);
+    
+    //Return the cardId and push it id to the cardsChosenIds array
+    cardsChosenIds.push(cardId)
+
+    //Add the img property to the flipped card
+    this.setAttribute("src", cardArray[cardId].img);
+
+//Add 0.5seconds before checkMatch function is called
+if (cardsChosen.length === 2) {
+    setTimeout(checkMatch, 500) 
+}
+
+//Start timer 
+// setInterval(increaseTimer, 1000);
+
+}
+
+
+//## Function - CheckMatch
 function checkMatch() {
      //Search for every image in the #grid
      const cards = document.querySelectorAll("#grid img");
@@ -85,11 +142,10 @@ function checkMatch() {
     } else {
         cards[cardsChosenIds[0]].setAttribute("src", "images/blank.png");
         cards[cardsChosenIds[1]].setAttribute("src", "images/blank.png");
-    }
+    };
 
-    
 
-    //Empty Arrays
+    //Empty Arrays again
     cardsChosen = [];
     cardsChosenIds = [];
 
@@ -100,54 +156,40 @@ function checkMatch() {
 }
 
 
-function createBoard() {
-    for (let i = 0; i < cardArray.length; i++) {
-        
-        //Create an element <img> using the createElement method 
-        const card = document.createElement("img");
-
-        //Set the "src" attribute to the created image element
-        card.src = "images/blank.png";
-
-        //Set an id of "data-id" based on the index
-        card.setAttribute("data-id", i);
-        
-        //Identified wich container aka "div" to append img elements to
-        gridDisplay.append(card);
-
-        //Flip card on click
-        card.addEventListener("click", flipCard);
-    }
-}
-
-createBoard();
-
-
-function flipCard() {
-    //Whatever element will be clicked, I wanna get his attribute
-    const cardId = this.getAttribute("data-id");
-
-    //Return the name of the object name clicked and push it to the cardChosen array
-    cardsChosen.push(cardArray[cardId].name);
-    
-    //Return the cardId and push it id to the cardsChosenIds array
-    cardsChosenIds.push(cardId)
 
 
 
-    //Add the img property to the flipped card
-    this.setAttribute("src", cardArray[cardId].img);
+//Select the timer div element
+const time_el = document.querySelector("#timer")
+let counter = 0;
 
+//## Function used to format the countdown display
+function format () {
+    hrs = Math.floor(counter / 3600); //1hour = 3600seconds
+    mins = Math.floor((counter - (hrs * 3600)) / 60); //1min = 60 seconds
+    secs = counter % 60
+
+    if (secs < 10) {
+        secs = "0" + secs
+    };
+    if (mins < 10) {
+        mins = "0" + mins
+    };
     
 
-if (cardsChosen.length === 2) {
-    setTimeout(checkMatch, 500) 
-}
-
-}
+    time_el.innerText = `${mins}:${secs}`;
+};
 
 
-//sort an array randomly
-const sortArray = cardArray.sort( () => 0.5 - Math.random());
-console.log(sortArray);
+
+
+//## Timer function - 
+function increaseTimer() {
+    format();
+    counter++;
+    console.log(counter);
+};
+
+
+
 
