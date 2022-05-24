@@ -161,37 +161,29 @@ function checkMatch() {
 }
 
 
-
-
-
 //Select the timer div element
 const time_el = document.querySelector("#timer")
 let counter = 0;
 
-//## Function used to format the countdown display
-function format () {
-    hrs = Math.floor(counter / 3600); //1hour = 3600seconds
-    mins = Math.floor((counter - (hrs * 3600)) / 60); //1min = 60 seconds
-    secs = counter % 60
-
-    if (secs < 10) {
-        secs = "0" + secs
-    };
-    if (mins < 10) {
-        mins = "0" + mins
-    };
-    
-    //Display the counter
-    time_el.innerText = `${mins}:${secs}`;
-};
-
-
-
 
 //## Timer function - 
 function increaseTimer() {
-    (format() {
+
+    //## IIFE - Function used to format the countdown display 
+    (function() {
+        hrs = Math.floor(counter / 3600); //1hour = 3600seconds
+        mins = Math.floor((counter - (hrs * 3600)) / 60); //1min = 60 seconds
+        secs = counter % 60
+    
+        if (secs < 10) {
+            secs = "0" + secs
+        };
+        if (mins < 10) {
+            mins = "0" + mins
+        };
         
+        //Display the counter
+        time_el.innerText = `${mins}:${secs}`;
     })();
     counter++;
     console.log(counter);
