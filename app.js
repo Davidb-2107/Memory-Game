@@ -67,6 +67,7 @@ let cardWon = []
 const gridDisplay = document.querySelector("#grid");
 let score = 1;
 const resultDisplay = document.querySelector("#result");
+let interval = null;
 
 //__________________________________________
 
@@ -99,6 +100,7 @@ createBoard();
 
 //## Function flipCard - called everytime a card is clicked
 function flipCard() {
+
     //Whatever element will be clicked, I wanna get his attribute
     const cardId = this.getAttribute("data-id");
 
@@ -117,8 +119,11 @@ if (cardsChosen.length === 2) {
 }
 
 //Start timer 
-// setInterval(increaseTimer, 1000);
-
+if (interval) {
+    return
+} else {
+    interval =  setInterval(increaseTimer, 1000);
+} 
 }
 
 
@@ -176,7 +181,7 @@ function format () {
         mins = "0" + mins
     };
     
-
+    //Display the counter
     time_el.innerText = `${mins}:${secs}`;
 };
 
@@ -185,7 +190,9 @@ function format () {
 
 //## Timer function - 
 function increaseTimer() {
-    format();
+    (format() {
+        
+    })();
     counter++;
     console.log(counter);
 };
